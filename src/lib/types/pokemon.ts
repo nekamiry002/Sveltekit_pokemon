@@ -1,3 +1,5 @@
+import type { TypeFlags } from "typescript";
+
 export interface Pokemon{
     id: number;
     name: string;
@@ -5,7 +7,13 @@ export interface Pokemon{
     weight: number;
     sprites: {
         front_default: string;
+        back_default: string;
     };
+    types: Array<{
+        type: {
+            name: string;
+        }
+    }>;
 }
 
 export interface Pokemons {
@@ -15,5 +23,6 @@ export interface Pokemons {
     results: Array<{
         name: string;
         url: string;
+        id: number;
     }>;
 }
