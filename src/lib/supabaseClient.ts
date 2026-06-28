@@ -1,18 +1,20 @@
-import { createClient } from '@supabase/supabase-js'
+import { createBrowserClient } from '@supabase/ssr'
 import { PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_PUBLISHABLE_KEY } from '$env/static/public'
 
+type BrowserClient = ReturnType<typeof createBrowserClient>
+
 declare global {
-	var __supabase: ReturnType<typeof createClient> | undefined
+	var __supabase: BrowserClient | undefined
 }
 
-const getClient = () => {
-	if (typeof window !== 'undefined') {
-		if (!globalThis.__supabase) {
-			globalThis.__supabase = createClient(PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_PUBLISHABLE_KEY)
-		}
-		return globalThis.__supabase
+const getClient = (): BrowserClient => {
+	if (!globalThis.__supabase) {
+		globalThis.__supabase = createBrowserClient(
+			PUBLIC_SUPABASE_URL,
+			PUBLIC_SUPABASE_PUBLISHABLE_KEY
+		)
 	}
-	return createClient(PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_PUBLISHABLE_KEY)
+	return globalThis.__supabase
 }
 
 export const supabase = getClient()

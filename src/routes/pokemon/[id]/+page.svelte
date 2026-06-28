@@ -5,6 +5,7 @@
 	import { teamStore } from '$lib/state/team.svelte'
 	import { compareStore } from '$lib/state/compare.svelte'
 	import { invalidateAll } from '$app/navigation'
+	import type { Favorite } from '$lib/types/database'
 
 	let { data, form } = $props()
 
@@ -142,8 +143,10 @@
 							favoriteLoading = true
 							return async ({ result, update }) => {
 								if (result.type === 'success' && result.data) {
-									const d = result.data as { isFavorite?: boolean }
-									if (d.isFavorite === false) {
+									const d = result.data as { isFavorite: boolean; favorite?: Favorite }
+									if (d.isFavorite && d.favorite) {
+										favoritesStore.add(d.favorite)
+									} else {
 										favoritesStore.remove(pokemon.id)
 									}
 								}

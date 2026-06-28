@@ -5,7 +5,7 @@ export const ratingsService = {
 	async getForPokemon(supabase: SupabaseClient, pokemonId: number): Promise<Rating[]> {
 		const { data } = await supabase
 			.from('ratings')
-			.select('*, profiles(username)')
+			.select('*, profiles!ratings_profile_fkey(username)')
 			.eq('pokemon_id', pokemonId)
 			.order('created_at', { ascending: false })
 		return data ?? []

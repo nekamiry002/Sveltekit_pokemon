@@ -55,16 +55,21 @@ export const actions: Actions = {
 
 		if (existing) {
 			await supabase.from('favorites').delete().eq('id', existing.id)
-			return { isFavorite: false }
+			return { isFavorite: false, pokemonId }
 		}
 
 		const [pokemon] = await pokemonService.getOnePokemon(pokemonId)
-		await supabase.from('favorites').insert({
-			user_id: user.id,
-			pokemon_id: pokemonId,
-			pokemon_name: pokemon?.name ?? `pokemon-${pokemonId}`,
-		})
-		return { isFavorite: true }
+		const { data: newFav } = await supabase
+			.from('favorites')
+			.insert({
+				user_id: user.id,
+				pokemon_id: pokemonId,
+				pokemon_name: pokemon?.name ?? `pokemon-${pokemonId}`,
+			})
+			.select()
+			.single()
+
+		return { isFavorite: true, pokemonId, favorite: newFav }
 	},
 
 	toggleTeam: async ({ params, locals: { supabase, safeGetSession } }) => {
