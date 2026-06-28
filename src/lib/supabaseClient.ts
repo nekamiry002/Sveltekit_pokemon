@@ -1,24 +1,18 @@
-import { createClient } from "@supabase/supabase-js";
-import { PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_PUBLISHABLE_KEY } from "$env/static/public"
-
-const supabaseUrl = PUBLIC_SUPABASE_URL;
-const supabaseKey = PUBLIC_SUPABASE_PUBLISHABLE_KEY;
+import { createClient } from '@supabase/supabase-js'
+import { PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_PUBLISHABLE_KEY } from '$env/static/public'
 
 declare global {
-	// allow global __supabase for dev hot reload
-	var __supabase: any | undefined
+	var __supabase: ReturnType<typeof createClient> | undefined
 }
 
 const getClient = () => {
 	if (typeof window !== 'undefined') {
 		if (!globalThis.__supabase) {
-			globalThis.__supabase = createClient(supabaseUrl, supabaseKey)
+			globalThis.__supabase = createClient(PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_PUBLISHABLE_KEY)
 		}
 		return globalThis.__supabase
 	}
-
-	// server
-	return createClient(supabaseUrl, supabaseKey)
+	return createClient(PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_PUBLISHABLE_KEY)
 }
 
 export const supabase = getClient()

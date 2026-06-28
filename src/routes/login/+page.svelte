@@ -1,96 +1,180 @@
 <script lang="ts">
-	export const ssr = false;
+	import { enhance } from '$app/forms'
 
-	import { onMount } from 'svelte'
-	import { supabase } from '$lib/supabaseClient'
-	import { goto } from '$app/navigation'
+	let { form } = $props()
 
-	let email = $state('')
-	let password = $state('')
+	let mode = $state<'login' | 'signup'>('login')
 	let loading = $state(false)
-	let message: string | null = $state(null)
-	let isSignup = $state(false)
-	let session: any = $state(null)
-
-	async function submit() {
-		loading = true
-		message = null
-
-		try {
-			if (isSignup) {
-				const res = await fetch('/api/create-user', {
-					method: 'POST',
-					headers: { 'content-type': 'application/json' },
-					body: JSON.stringify({ email, password }),
-				})
-				const result = await res.json()
-				if (!res.ok) throw new Error(result.error || 'Signup failed')
-				message = 'Compte créé — tu peux te connecter.'
-				isSignup = false
-			} else {
-				const { data: signInData, error } = await supabase.auth.signInWithPassword({ email, password })
-				if (error) throw error
-				const session = signInData?.session
-				if (!session) {
-					const { data: sessionData } = await supabase.auth.getSession()
-					if (!sessionData?.session) {
-						throw new Error('Impossible de récupérer la session après connexion.')
-					}
-				}
-				message = 'Connecté'
-				location.assign('/account?notice=connecte')
-			}
-		} catch (err: any) {
-			message = err?.message ?? 'An unexpected error occurred.'
-		} finally {
-			loading = false
-		}
-	}
-
-	onMount(async () => {
-		const { data } = await supabase.auth.getSession()
-		session = data?.session ?? null
-		if (session) goto('/account')
-	})
 </script>
 
 <svelte:head>
-	<title>Login</title>
+	<title>Connexion — Pokédex</title>
 </svelte:head>
 
-<div class="row flex flex-center">
-	<div class="col-6 form-widget">
-		<h1 class="header">Login / Register</h1>
-		{#if message}
-			<div class="success">{message}</div>
-		{/if}
-
-		<div class="mb-3">
-			<label for="email">Email</label>
-			<input id="email" class="p-2 border rounded w-full" type="email" bind:value={email} placeholder="you@example.com" />
-		</div>
-
-		<div class="mb-3">
-			<label for="password">Password</label>
-			<input id="password" class="p-2 border rounded w-full" type="password" bind:value={password} placeholder="Password" />
-		</div>
-
-		<div class="mt-4">
-			<button type="button" class="bg-indigo-600 text-white py-2 px-4 rounded w-full" onclick={submit} disabled={loading}>
-				{loading ? 'Veuillez patienter...' : isSignup ? 'Créer le compte' : 'Se connecter'}
-			</button>
-		</div>
-
-		<div class="mt-2">
-			<button type="button" class="border py-2 px-4 rounded w-full" onclick={() => (isSignup = !isSignup)}>
-				{isSignup ? 'J’ai déjà un compte' : 'Créer un compte'}
-			</button>
-		</div>
-
-		{#if session}
-			<div class="mt-3">
-				<a href="/account" class="inline-block bg-green-600 text-white py-1 px-3 rounded">Account</a>
+<div class="min-h-[calc(100vh-4rem)] flex items-center justify-center py-12 px-4">
+	<div class="w-full max-w-md">
+		<!-- Card -->
+		<div class="bg-white rounded-2xl shadow-xl overflow-hidden">
+			<!-- Header -->
+			<div class="bg-red-600 px-8 py-6 text-center">
+				<div class="text-4xl mb-2" aria-hidden="true">⬤</div>
+				<h1 class="text-2xl font-bold text-white">Pokédex</h1>
+				<p class="text-red-200 text-sm mt-1">
+					{mode === 'login' ? 'Connectez-vous à votre compte' : 'Créez votre compte'}
+				</p>
 			</div>
-		{/if}
+
+			<div class="px-8 py-6">
+				<!-- Mode tabs -->
+				<div class="flex rounded-lg bg-gray-100 p-1 mb-6" role="tablist">
+					<button
+						type="button"
+						role="tab"
+						aria-selected={mode === 'login'}
+						class="flex-1 py-2 text-sm font-medium rounded-md transition-all
+							{mode === 'login' ? 'bg-white text-gray-900 shadow-sm' : 'text-gray-500 hover:text-gray-700'}"
+						onclick={() => (mode = 'login')}
+					>
+						Connexion
+					</button>
+					<button
+						type="button"
+						role="tab"
+						aria-selected={mode === 'signup'}
+						class="flex-1 py-2 text-sm font-medium rounded-md transition-all
+							{mode === 'signup' ? 'bg-white text-gray-900 shadow-sm' : 'text-gray-500 hover:text-gray-700'}"
+						onclick={() => (mode = 'signup')}
+					>
+						Créer un compte
+					</button>
+				</div>
+
+				<!-- Success message -->
+				{#if form?.success && form?.message}
+					<div class="mb-4 p-3 bg-green-50 border border-green-200 rounded-lg text-green-700 text-sm" role="alert">
+						{form.message}
+					</div>
+				{/if}
+
+				<!-- Error message -->
+				{#if form?.error}
+					<div class="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm" role="alert">
+						{form.error}
+					</div>
+				{/if}
+
+				<!-- Login form -->
+				{#if mode === 'login'}
+					<form
+						method="POST"
+						action="?/login"
+						use:enhance={() => {
+							loading = true
+							return async ({ update }) => {
+								loading = false
+								await update()
+							}
+						}}
+					>
+						<div class="space-y-4">
+							<div>
+								<label for="login-email" class="block text-sm font-medium text-gray-700 mb-1">
+									Email
+								</label>
+								<input
+									id="login-email"
+									name="email"
+									type="email"
+									required
+									autocomplete="email"
+									value={form?.email ?? ''}
+									placeholder="vous@exemple.com"
+									class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent"
+								/>
+							</div>
+
+							<div>
+								<label for="login-password" class="block text-sm font-medium text-gray-700 mb-1">
+									Mot de passe
+								</label>
+								<input
+									id="login-password"
+									name="password"
+									type="password"
+									required
+									autocomplete="current-password"
+									placeholder="••••••••"
+									class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent"
+								/>
+							</div>
+
+							<button
+								type="submit"
+								disabled={loading}
+								class="w-full py-2.5 bg-red-600 hover:bg-red-700 disabled:bg-red-300 text-white font-semibold rounded-lg transition-colors"
+							>
+								{loading ? 'Connexion...' : 'Se connecter'}
+							</button>
+						</div>
+					</form>
+
+				<!-- Signup form -->
+				{:else}
+					<form
+						method="POST"
+						action="?/signup"
+						use:enhance={() => {
+							loading = true
+							return async ({ update }) => {
+								loading = false
+								await update()
+							}
+						}}
+					>
+						<div class="space-y-4">
+							<div>
+								<label for="signup-email" class="block text-sm font-medium text-gray-700 mb-1">
+									Email
+								</label>
+								<input
+									id="signup-email"
+									name="email"
+									type="email"
+									required
+									autocomplete="email"
+									value={form?.email ?? ''}
+									placeholder="vous@exemple.com"
+									class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent"
+								/>
+							</div>
+
+							<div>
+								<label for="signup-password" class="block text-sm font-medium text-gray-700 mb-1">
+									Mot de passe <span class="text-gray-400 font-normal">(6 caractères min.)</span>
+								</label>
+								<input
+									id="signup-password"
+									name="password"
+									type="password"
+									required
+									minlength="6"
+									autocomplete="new-password"
+									placeholder="••••••••"
+									class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent"
+								/>
+							</div>
+
+							<button
+								type="submit"
+								disabled={loading}
+								class="w-full py-2.5 bg-red-600 hover:bg-red-700 disabled:bg-red-300 text-white font-semibold rounded-lg transition-colors"
+							>
+								{loading ? 'Création...' : 'Créer le compte'}
+							</button>
+						</div>
+					</form>
+				{/if}
+			</div>
+		</div>
 	</div>
 </div>

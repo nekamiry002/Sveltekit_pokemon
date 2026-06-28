@@ -1,8 +1,3 @@
-import { supabase } from "$lib/supabaseClient";
+import type { PageServerLoad } from './$types'
 
-export async function load() {
-  const { data } = await supabase.from("countries").select();
-  return {
-    countries: data ?? [],
-  };
-}
+export const load: PageServerLoad = async () => ({})

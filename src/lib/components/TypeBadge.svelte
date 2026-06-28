@@ -1,0 +1,29 @@
+<script lang="ts">
+	const TYPE_COLORS: Record<string, string> = {
+		normal: 'bg-gray-400 text-white',
+		fire: 'bg-orange-500 text-white',
+		water: 'bg-blue-500 text-white',
+		electric: 'bg-yellow-400 text-gray-900',
+		grass: 'bg-green-500 text-white',
+		ice: 'bg-cyan-400 text-white',
+		fighting: 'bg-red-700 text-white',
+		poison: 'bg-purple-600 text-white',
+		ground: 'bg-yellow-700 text-white',
+		flying: 'bg-indigo-400 text-white',
+		psychic: 'bg-pink-500 text-white',
+		bug: 'bg-lime-500 text-white',
+		rock: 'bg-yellow-800 text-white',
+		ghost: 'bg-purple-900 text-white',
+		dragon: 'bg-indigo-700 text-white',
+		dark: 'bg-gray-800 text-white',
+		steel: 'bg-gray-500 text-white',
+		fairy: 'bg-pink-300 text-gray-900',
+	}
+
+	let { type }: { type: string } = $props()
+	const classes = $derived(TYPE_COLORS[type] ?? 'bg-gray-300 text-gray-800')
+</script>
+
+<span class="inline-block px-2 py-0.5 rounded-full text-xs font-semibold capitalize {classes}">
+	{type}
+</span>

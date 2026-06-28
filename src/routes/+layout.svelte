@@ -1,16 +1,25 @@
 <script lang="ts">
-	import '../app.css';
-	import './layout.css';
-	import favicon from '$lib/assets/favicon.svg';
+	import '../app.css'
+	import Nav from '$lib/components/Nav.svelte'
+	import { authStore } from '$lib/state/auth.svelte'
+	import { favoritesStore } from '$lib/state/favorites.svelte'
+	import { teamStore } from '$lib/state/team.svelte'
 
-	let { children } = $props();
+	let { data, children } = $props()
+
+	$effect(() => {
+		authStore.init(data.user, data.session)
+		favoritesStore.set(data.favorites ?? [])
+		teamStore.set(data.team ?? [])
+	})
 </script>
 
 <svelte:head>
-	<link rel="icon" href={favicon} />
-	<title>User Management</title>
+	<title>Pokédex</title>
 </svelte:head>
 
-<div class="container" style="padding: 50px 0 100px 0">
+<Nav />
+
+<main class="min-h-screen bg-gray-50">
 	{@render children()}
-</div>
+</main>
