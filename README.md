@@ -4,15 +4,15 @@ Application web de consultation des 151 premiers Pokémon, avec gestion de favor
 
 ## Stack technique
 
-| Technologie | Usage |
-|---|---|
-| **SvelteKit 2** (Svelte 5 Runes) | Framework front-end SSR |
-| **TypeScript strict** | Typage complet, zéro `any` |
-| **TailwindCSS v4** | Styles utility-first, mobile-first |
-| **Supabase** | Auth, BDD (favoris, équipe, avis) |
-| **PokeAPI** (`pokeapi.co`) | Données Pokémon |
-| **Vercel** | Déploiement continu |
-| **GitHub Actions** | CI lint + build |
+| Technologie                      | Usage                              |
+| -------------------------------- | ---------------------------------- |
+| **SvelteKit 2** (Svelte 5 Runes) | Framework front-end SSR            |
+| **TypeScript strict**            | Typage complet, zéro `any`         |
+| **TailwindCSS v4**               | Styles utility-first, mobile-first |
+| **Supabase**                     | Auth, BDD (favoris, équipe, avis)  |
+| **PokeAPI** (`pokeapi.co`)       | Données Pokémon                    |
+| **Vercel**                       | Déploiement continu                |
+| **GitHub Actions**               | CI lint + build                    |
 
 ---
 
@@ -87,6 +87,7 @@ src/
 ## Fonctionnalités implémentées
 
 ### Authentification
+
 - [x] Inscription (form action SSR, `supabase.auth.signUp`)
 - [x] Connexion (form action SSR, `signInWithPassword`)
 - [x] Déconnexion (form action)
@@ -94,6 +95,7 @@ src/
 - [x] Redirection automatique si non connecté
 
 ### Pokédex
+
 - [x] Liste des 151 premiers Pokémon (SSR, PokeAPI)
 - [x] Recherche en temps réel (nom ou numéro)
 - [x] Filtre par type (appel PokeAPI `/type/{type}`)
@@ -103,23 +105,27 @@ src/
 - [x] Artwork officiel haute résolution
 
 ### Favoris
+
 - [x] Ajout / retrait depuis la liste ou la page de détail
 - [x] Persistance Supabase (table `favorites`)
 - [x] État partagé via `favoritesStore` (Universal Reactivity)
 - [x] Page dédiée `/favorites`
 
 ### Équipe
+
 - [x] Ajouter un Pokémon à son équipe depuis la page de détail
 - [x] Maximum 6 Pokémon, affectation automatique des slots
 - [x] Retrait depuis `/team` + suggestions depuis les favoris
 - [x] Persistance Supabase (table `team_members`)
 
 ### Comparaison
+
 - [x] Sélection jusqu'à 3 Pokémon depuis les cartes ou le détail
 - [x] Page `/compare` avec tableau comparatif des stats
 - [x] Mise en évidence du meilleur score par statistique
 
 ### Avis communautaires
+
 - [x] Notation 1 à 5 étoiles + commentaire (optionnel)
 - [x] Un avis par utilisateur par Pokémon (upsert)
 - [x] Modification et suppression de son avis
@@ -127,6 +133,7 @@ src/
 - [x] Persistance Supabase (table `ratings`)
 
 ### Qualité technique
+
 - [x] TypeScript strict — aucun `any`
 - [x] Universal Reactivity — 4 stores `.svelte.ts`
 - [x] Server Actions — login, signup, updateProfile, toggleFavorite, toggleTeam, rate, deleteRating
@@ -153,12 +160,12 @@ src/
 
 Le schéma complet est dans [`supabase/schema.sql`](supabase/schema.sql).
 
-| Table | Description |
-|---|---|
-| `profiles` | Profil utilisateur (lié à `auth.users`) |
-| `favorites` | Pokémon favoris (`user_id`, `pokemon_id`) |
-| `team_members` | Équipe jusqu'à 6 slots numérotés |
-| `ratings` | Note (1–5) + commentaire par Pokémon |
+| Table          | Description                               |
+| -------------- | ----------------------------------------- |
+| `profiles`     | Profil utilisateur (lié à `auth.users`)   |
+| `favorites`    | Pokémon favoris (`user_id`, `pokemon_id`) |
+| `team_members` | Équipe jusqu'à 6 slots numérotés          |
+| `ratings`      | Note (1–5) + commentaire par Pokémon      |
 
 RLS activée sur toutes les tables. Un trigger crée automatiquement un profil à l'inscription.
 

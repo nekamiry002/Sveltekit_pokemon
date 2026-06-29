@@ -9,7 +9,11 @@ export const load: LayoutServerLoad = async ({ locals: { supabase, safeGetSessio
 
 	if (user) {
 		const [favResult, teamResult] = await Promise.all([
-			supabase.from('favorites').select('*').eq('user_id', user.id).order('created_at', { ascending: false }),
+			supabase
+				.from('favorites')
+				.select('*')
+				.eq('user_id', user.id)
+				.order('created_at', { ascending: false }),
 			supabase.from('team_members').select('*').eq('user_id', user.id).order('slot'),
 		])
 		favorites = favResult.data ?? []

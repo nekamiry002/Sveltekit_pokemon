@@ -21,7 +21,11 @@
 	<div class="max-w-6xl mx-auto px-4">
 		<div class="flex items-center justify-between h-16">
 			<!-- Logo -->
-			<a href="/" class="flex items-center gap-2 text-white font-bold text-xl" aria-label="Accueil Pokédex">
+			<a
+				href="/"
+				class="flex items-center gap-2 text-white font-bold text-xl"
+				aria-label="Accueil Pokédex"
+			>
 				<span class="text-2xl" aria-hidden="true">⬤</span>
 				<span>Pokédex</span>
 			</a>
@@ -32,9 +36,7 @@
 					<a
 						href={link.href}
 						class="px-3 py-2 rounded-lg text-sm font-medium transition-colors
-							{isActive(link.href)
-								? 'bg-red-800 text-white'
-								: 'text-red-100 hover:bg-red-700 hover:text-white'}"
+							{isActive(link.href) ? 'bg-red-800 text-white' : 'text-red-100 hover:bg-red-700 hover:text-white'}"
 						aria-current={isActive(link.href) ? 'page' : undefined}
 					>
 						{link.label}
@@ -54,7 +56,11 @@
 			<!-- Auth + team badge -->
 			<div class="hidden md:flex items-center gap-3">
 				{#if teamStore.members.length > 0}
-					<a href="/team" class="text-yellow-300 text-sm font-medium" aria-label="Mon équipe: {teamStore.members.length} Pokémon">
+					<a
+						href="/team"
+						class="text-yellow-300 text-sm font-medium"
+						aria-label="Mon équipe: {teamStore.members.length} Pokémon"
+					>
 						🏆 {teamStore.members.length}/6
 					</a>
 				{/if}
@@ -84,12 +90,34 @@
 				aria-expanded={mobileOpen}
 			>
 				{#if mobileOpen}
-					<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+					<svg
+						class="w-6 h-6"
+						fill="none"
+						stroke="currentColor"
+						viewBox="0 0 24 24"
+						aria-hidden="true"
+					>
+						<path
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							stroke-width="2"
+							d="M6 18L18 6M6 6l12 12"
+						/>
 					</svg>
 				{:else}
-					<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+					<svg
+						class="w-6 h-6"
+						fill="none"
+						stroke="currentColor"
+						viewBox="0 0 24 24"
+						aria-hidden="true"
+					>
+						<path
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							stroke-width="2"
+							d="M4 6h16M4 12h16M4 18h16"
+						/>
 					</svg>
 				{/if}
 			</button>
@@ -117,11 +145,19 @@
 					</a>
 				{/if}
 				{#if authStore.isAuthenticated}
-					<a href="/account" class="px-3 py-2 text-white font-semibold" onclick={() => (mobileOpen = false)}>
+					<a
+						href="/account"
+						class="px-3 py-2 text-white font-semibold"
+						onclick={() => (mobileOpen = false)}
+					>
 						Mon compte
 					</a>
 				{:else}
-					<a href="/login" class="px-3 py-2 text-white font-semibold" onclick={() => (mobileOpen = false)}>
+					<a
+						href="/login"
+						class="px-3 py-2 text-white font-semibold"
+						onclick={() => (mobileOpen = false)}
+					>
 						Connexion
 					</a>
 				{/if}

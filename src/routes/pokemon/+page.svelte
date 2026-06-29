@@ -15,9 +15,24 @@
 	let typeFilteredIds = $state<Set<number> | null>(null)
 
 	const TYPES = [
-		'normal','fire','water','electric','grass','ice',
-		'fighting','poison','ground','flying','psychic','bug',
-		'rock','ghost','dragon','dark','steel','fairy',
+		'normal',
+		'fire',
+		'water',
+		'electric',
+		'grass',
+		'ice',
+		'fighting',
+		'poison',
+		'ground',
+		'flying',
+		'psychic',
+		'bug',
+		'rock',
+		'ghost',
+		'dragon',
+		'dark',
+		'steel',
+		'fairy',
 	]
 
 	// Load Pokémon IDs by type from PokeAPI
@@ -55,12 +70,12 @@
 	const filtered = $derived(
 		data.pokemons.results
 			.filter((p) => {
-				const matchesSearch = p.name.toLowerCase().includes(search.toLowerCase()) ||
-					String(p.id).includes(search)
+				const matchesSearch =
+					p.name.toLowerCase().includes(search.toLowerCase()) || String(p.id).includes(search)
 				const matchesType = typeFilteredIds === null || typeFilteredIds.has(p.id)
 				return matchesSearch && matchesType
 			})
-			.sort((a, b) => sortBy === 'name' ? a.name.localeCompare(b.name) : a.id - b.id)
+			.sort((a, b) => (sortBy === 'name' ? a.name.localeCompare(b.name) : a.id - b.id))
 	)
 
 	// Pagination
@@ -70,9 +85,10 @@
 	const paginatedList = $derived(filtered.slice((page - 1) * PER_PAGE, page * PER_PAGE))
 
 	$effect(() => {
-		// Reset page when filter changes
-		search; selectedType; sortBy
-		page = 1
+		const s = search
+		const t = selectedType
+		const o = sortBy
+		page = s || t || o ? 1 : 1
 	})
 
 	function goCompare() {
@@ -96,8 +112,19 @@
 				onclick={goCompare}
 				class="px-4 py-2 bg-yellow-400 hover:bg-yellow-300 text-gray-900 font-semibold rounded-lg transition-colors flex items-center gap-2"
 			>
-				<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+				<svg
+					class="w-4 h-4"
+					fill="none"
+					stroke="currentColor"
+					viewBox="0 0 24 24"
+					aria-hidden="true"
+				>
+					<path
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						stroke-width="2"
+						d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
+					/>
 				</svg>
 				Comparer ({compareStore.ids.length})
 			</button>
@@ -108,8 +135,19 @@
 	<div class="bg-white rounded-xl shadow-sm p-4 mb-6 flex flex-col sm:flex-row gap-3">
 		<!-- Search -->
 		<div class="flex-1 relative">
-			<svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-				<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+			<svg
+				class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400"
+				fill="none"
+				stroke="currentColor"
+				viewBox="0 0 24 24"
+				aria-hidden="true"
+			>
+				<path
+					stroke-linecap="round"
+					stroke-linejoin="round"
+					stroke-width="2"
+					d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+				/>
 			</svg>
 			<input
 				type="search"
@@ -123,7 +161,10 @@
 		<!-- Type filter -->
 		<div class="relative">
 			{#if typeFilterLoading}
-				<div class="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 border-2 border-red-600 border-t-transparent rounded-full animate-spin" aria-hidden="true"></div>
+				<div
+					class="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 border-2 border-red-600 border-t-transparent rounded-full animate-spin"
+					aria-hidden="true"
+				></div>
 			{/if}
 			<select
 				bind:value={selectedType}
@@ -166,7 +207,11 @@
 			<p class="text-lg font-medium">Aucun Pokémon trouvé</p>
 			<p class="text-sm mt-1">Essayez de modifier votre recherche ou vos filtres</p>
 			<button
-				onclick={() => { search = ''; selectedType = ''; sortBy = 'id' }}
+				onclick={() => {
+					search = ''
+					selectedType = ''
+					sortBy = 'id'
+				}}
 				class="mt-4 px-4 py-2 text-sm text-red-600 hover:text-red-700 underline"
 			>
 				Réinitialiser les filtres
@@ -182,9 +227,13 @@
 
 	<!-- Pagination -->
 	{#if totalPages > 1}
-		<div class="flex items-center justify-center gap-2 mt-8" role="navigation" aria-label="Pagination">
+		<div
+			class="flex items-center justify-center gap-2 mt-8"
+			role="navigation"
+			aria-label="Pagination"
+		>
 			<button
-				onclick={() => page = Math.max(1, page - 1)}
+				onclick={() => (page = Math.max(1, page - 1))}
 				disabled={page === 1}
 				class="px-3 py-2 border rounded-lg text-sm font-medium disabled:opacity-40 hover:bg-gray-50 transition-colors"
 				aria-label="Page précédente"
@@ -195,7 +244,7 @@
 			{#each Array.from({ length: totalPages }, (_, i) => i + 1) as p}
 				{#if p === 1 || p === totalPages || (p >= page - 1 && p <= page + 1)}
 					<button
-						onclick={() => page = p}
+						onclick={() => (page = p)}
 						class="w-9 h-9 rounded-lg text-sm font-medium transition-colors
 							{p === page ? 'bg-red-600 text-white' : 'border hover:bg-gray-50 text-gray-700'}"
 						aria-label="Page {p}"
@@ -209,7 +258,7 @@
 			{/each}
 
 			<button
-				onclick={() => page = Math.min(totalPages, page + 1)}
+				onclick={() => (page = Math.min(totalPages, page + 1))}
 				disabled={page === totalPages}
 				class="px-3 py-2 border rounded-lg text-sm font-medium disabled:opacity-40 hover:bg-gray-50 transition-colors"
 				aria-label="Page suivante"

@@ -23,7 +23,9 @@
 	})
 
 	const pokemon = $derived(data.pokemon)
-	const artworkUrl = $derived(`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${data.pokemon.id}.png`)
+	const artworkUrl = $derived(
+		`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${data.pokemon.id}.png`
+	)
 
 	const isFav = $derived(favoritesStore.isFavorite(pokemon.id))
 	const inTeam = $derived(teamStore.inTeam(pokemon.id))
@@ -31,13 +33,18 @@
 
 	const avgRating = $derived(
 		data.ratings.length > 0
-			? data.ratings.reduce((s: number, r: { rating: number }) => s + r.rating, 0) / data.ratings.length
+			? data.ratings.reduce((s: number, r: { rating: number }) => s + r.rating, 0) /
+					data.ratings.length
 			: 0
 	)
 
 	const statMax: Record<string, number> = {
-		hp: 255, attack: 190, defense: 230, 'special-attack': 194,
-		'special-defense': 230, speed: 200,
+		hp: 255,
+		attack: 190,
+		defense: 230,
+		'special-attack': 194,
+		'special-defense': 230,
+		speed: 200,
 	}
 </script>
 
@@ -47,7 +54,10 @@
 
 <div class="max-w-4xl mx-auto px-4 py-8">
 	<!-- Back link -->
-	<a href="/pokemon" class="inline-flex items-center gap-2 text-gray-500 hover:text-gray-700 mb-6 text-sm">
+	<a
+		href="/pokemon"
+		class="inline-flex items-center gap-2 text-gray-500 hover:text-gray-700 mb-6 text-sm"
+	>
 		<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
 			<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
 		</svg>
@@ -56,7 +66,10 @@
 
 	<!-- Error from form actions -->
 	{#if form?.error}
-		<div class="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm" role="alert">
+		<div
+			class="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm"
+			role="alert"
+		>
 			{form.error}
 		</div>
 	{/if}
@@ -70,7 +83,9 @@
 					src={artworkUrl}
 					alt={pokemon.name}
 					class="w-48 h-48 mx-auto object-contain drop-shadow-lg my-4"
-					onerror={(e) => { (e.currentTarget as HTMLImageElement).src = pokemon.sprites.front_default }}
+					onerror={(e) => {
+						;(e.currentTarget as HTMLImageElement).src = pokemon.sprites.front_default
+					}}
 				/>
 				<h1 class="text-3xl font-bold text-gray-800 capitalize mb-3">{pokemon.name}</h1>
 				<div class="flex justify-center gap-2 mb-4">
@@ -160,13 +175,24 @@
 							disabled={favoriteLoading}
 							class="flex items-center gap-2 px-4 py-2 rounded-lg font-medium text-sm transition-colors
 								{isFav
-									? 'bg-red-100 text-red-600 hover:bg-red-200'
-									: 'bg-gray-100 text-gray-600 hover:bg-red-50 hover:text-red-500'}"
+								? 'bg-red-100 text-red-600 hover:bg-red-200'
+								: 'bg-gray-100 text-gray-600 hover:bg-red-50 hover:text-red-500'}"
 							aria-label={isFav ? 'Retirer des favoris' : 'Ajouter aux favoris'}
 							aria-pressed={isFav}
 						>
-							<svg class="w-4 h-4" fill={isFav ? 'currentColor' : 'none'} stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+							<svg
+								class="w-4 h-4"
+								fill={isFav ? 'currentColor' : 'none'}
+								stroke="currentColor"
+								viewBox="0 0 24 24"
+								aria-hidden="true"
+							>
+								<path
+									stroke-linecap="round"
+									stroke-linejoin="round"
+									stroke-width="2"
+									d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
+								/>
 							</svg>
 							{favoriteLoading ? '...' : isFav ? 'Favori' : 'Ajouter aux favoris'}
 						</button>
@@ -190,18 +216,27 @@
 							disabled={teamLoading || (!inTeam && teamStore.isFull)}
 							class="flex items-center gap-2 px-4 py-2 rounded-lg font-medium text-sm transition-colors
 								{inTeam
-									? 'bg-yellow-100 text-yellow-700 hover:bg-yellow-200'
-									: teamStore.isFull
+								? 'bg-yellow-100 text-yellow-700 hover:bg-yellow-200'
+								: teamStore.isFull
 									? 'bg-gray-100 text-gray-400 cursor-not-allowed'
 									: 'bg-gray-100 text-gray-600 hover:bg-yellow-50 hover:text-yellow-600'}"
 							aria-label={inTeam ? "Retirer de l'équipe" : "Ajouter à l'équipe"}
 							aria-pressed={inTeam}
 						>
-							🏆 {teamLoading ? '...' : inTeam ? "Dans l'équipe" : teamStore.isFull ? 'Équipe complète' : "Ajouter à l'équipe"}
+							🏆 {teamLoading
+								? '...'
+								: inTeam
+									? "Dans l'équipe"
+									: teamStore.isFull
+										? 'Équipe complète'
+										: "Ajouter à l'équipe"}
 						</button>
 					</form>
 				{:else}
-					<a href="/login" class="px-4 py-2 bg-gray-100 text-gray-500 rounded-lg text-sm hover:bg-gray-200">
+					<a
+						href="/login"
+						class="px-4 py-2 bg-gray-100 text-gray-500 rounded-lg text-sm hover:bg-gray-200"
+					>
 						Connectez-vous pour ajouter aux favoris
 					</a>
 				{/if}
@@ -211,8 +246,8 @@
 					onclick={() => compareStore.toggle(pokemon.id)}
 					class="flex items-center gap-2 px-4 py-2 rounded-lg font-medium text-sm transition-colors
 						{inCompare
-							? 'bg-indigo-100 text-indigo-700 hover:bg-indigo-200'
-							: 'bg-gray-100 text-gray-600 hover:bg-indigo-50 hover:text-indigo-600'}"
+						? 'bg-indigo-100 text-indigo-700 hover:bg-indigo-200'
+						: 'bg-gray-100 text-gray-600 hover:bg-indigo-50 hover:text-indigo-600'}"
 					aria-label={inCompare ? 'Retirer de la comparaison' : 'Comparer ce Pokémon'}
 					aria-pressed={inCompare}
 				>
@@ -232,7 +267,13 @@
 								<span class="text-gray-500 capitalize">{stat.stat.name.replace('-', ' ')}</span>
 								<span class="font-semibold text-gray-700">{stat.base_stat}</span>
 							</div>
-							<div class="h-2 bg-gray-100 rounded-full overflow-hidden" role="progressbar" aria-valuenow={stat.base_stat} aria-valuemin={0} aria-valuemax={max}>
+							<div
+								class="h-2 bg-gray-100 rounded-full overflow-hidden"
+								role="progressbar"
+								aria-valuenow={stat.base_stat}
+								aria-valuemin={0}
+								aria-valuemax={max}
+							>
 								<div
 									class="h-full rounded-full transition-all duration-500
 										{pct >= 80 ? 'bg-green-500' : pct >= 50 ? 'bg-yellow-400' : 'bg-red-400'}"
@@ -251,7 +292,12 @@
 						<p class="text-3xl font-bold text-gray-800">{avgRating.toFixed(1)}</p>
 						<div class="flex gap-0.5 mt-1" aria-label="Note moyenne: {avgRating.toFixed(1)} sur 5">
 							{#each [1, 2, 3, 4, 5] as star}
-								<span class="text-lg {star <= Math.round(avgRating) ? 'text-yellow-400' : 'text-gray-200'}" aria-hidden="true">★</span>
+								<span
+									class="text-lg {star <= Math.round(avgRating)
+										? 'text-yellow-400'
+										: 'text-gray-200'}"
+									aria-hidden="true">★</span
+								>
 							{/each}
 						</div>
 					</div>
@@ -282,7 +328,12 @@
 					</div>
 					<div class="flex gap-1 mb-2" aria-label="Ma note: {data.userRating.rating} sur 5">
 						{#each [1, 2, 3, 4, 5] as star}
-							<span class="text-xl {star <= data.userRating.rating ? 'text-yellow-400' : 'text-gray-200'}" aria-hidden="true">★</span>
+							<span
+								class="text-xl {star <= data.userRating.rating
+									? 'text-yellow-400'
+									: 'text-gray-200'}"
+								aria-hidden="true">★</span
+							>
 						{/each}
 					</div>
 					{#if data.userRating.comment}
@@ -294,10 +345,14 @@
 						</button>
 					</form>
 				{:else}
-					<h3 class="font-semibold text-gray-800 mb-4">{data.userRating ? 'Modifier mon avis' : 'Laisser un avis'}</h3>
+					<h3 class="font-semibold text-gray-800 mb-4">
+						{data.userRating ? 'Modifier mon avis' : 'Laisser un avis'}
+					</h3>
 
 					{#if form?.ratingSuccess}
-						<div class="mb-3 p-2 bg-green-50 text-green-700 rounded-lg text-sm" role="alert">Avis sauvegardé !</div>
+						<div class="mb-3 p-2 bg-green-50 text-green-700 rounded-lg text-sm" role="alert">
+							Avis sauvegardé !
+						</div>
 					{/if}
 
 					<form
@@ -328,9 +383,11 @@
 											aria-label="{star} étoile{star > 1 ? 's' : ''}"
 										/>
 										<span
-											class="text-2xl transition-colors {userRating >= star ? 'text-yellow-400' : 'text-gray-200 hover:text-yellow-200'}"
-											aria-hidden="true"
-										>★</span>
+											class="text-2xl transition-colors {userRating >= star
+												? 'text-yellow-400'
+												: 'text-gray-200 hover:text-yellow-200'}"
+											aria-hidden="true">★</span
+										>
 									</label>
 								{/each}
 							</div>
@@ -389,7 +446,10 @@
 							</span>
 							<div class="flex gap-0.5" aria-label="Note: {rating.rating} sur 5">
 								{#each [1, 2, 3, 4, 5] as star}
-									<span class="text-sm {star <= rating.rating ? 'text-yellow-400' : 'text-gray-200'}" aria-hidden="true">★</span>
+									<span
+										class="text-sm {star <= rating.rating ? 'text-yellow-400' : 'text-gray-200'}"
+										aria-hidden="true">★</span
+									>
 								{/each}
 							</div>
 						</div>

@@ -51,14 +51,20 @@
 
 				<!-- Success message -->
 				{#if form?.success && form?.message}
-					<div class="mb-4 p-3 bg-green-50 border border-green-200 rounded-lg text-green-700 text-sm" role="alert">
+					<div
+						class="mb-4 p-3 bg-green-50 border border-green-200 rounded-lg text-green-700 text-sm"
+						role="alert"
+					>
 						{form.message}
 					</div>
 				{/if}
 
 				<!-- Error message -->
 				{#if form?.error}
-					<div class="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm" role="alert">
+					<div
+						class="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm"
+						role="alert"
+					>
 						{form.error}
 					</div>
 				{/if}
@@ -118,7 +124,7 @@
 						</div>
 					</form>
 
-				<!-- Signup form -->
+					<!-- Signup form -->
 				{:else}
 					<form
 						method="POST"

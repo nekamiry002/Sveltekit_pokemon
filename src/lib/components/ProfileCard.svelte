@@ -21,7 +21,10 @@
 				class="w-20 h-20 rounded-full object-cover ring-4 ring-red-100"
 			/>
 		{:else}
-			<div class="w-20 h-20 rounded-full bg-red-100 flex items-center justify-center ring-4 ring-red-200" aria-hidden="true">
+			<div
+				class="w-20 h-20 rounded-full bg-red-100 flex items-center justify-center ring-4 ring-red-200"
+				aria-hidden="true"
+			>
 				<span class="text-2xl font-bold text-red-600">
 					{(profile?.full_name ?? email).charAt(0).toUpperCase()}
 				</span>

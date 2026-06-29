@@ -5,8 +5,6 @@
 	import { supabase } from '$lib/supabaseClient'
 	import { authStore } from '$lib/state/auth.svelte'
 	import { invalidateAll } from '$app/navigation'
-	import LoadingSpinner from '$lib/components/LoadingSpinner.svelte'
-
 	let removing = $state<number | null>(null)
 	let error = $state<string | null>(null)
 
@@ -27,9 +25,7 @@
 	const spriteUrl = (id: number) =>
 		`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${id}.png`
 
-	const memberBySlot = $derived(
-		new Map(teamStore.members.map((m) => [m.slot, m]))
-	)
+	const memberBySlot = $derived(new Map(teamStore.members.map((m) => [m.slot, m])))
 </script>
 
 <svelte:head>
@@ -46,7 +42,10 @@
 	</div>
 
 	{#if error}
-		<div class="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm" role="alert">
+		<div
+			class="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm"
+			role="alert"
+		>
 			{error}
 		</div>
 	{/if}
@@ -69,7 +68,9 @@
 								src={artworkUrl(member.pokemon_id)}
 								alt={member.pokemon_name}
 								class="w-24 h-24 mx-auto object-contain hover:scale-110 transition-transform"
-								onerror={(e) => { (e.currentTarget as HTMLImageElement).src = spriteUrl(member.pokemon_id) }}
+								onerror={(e) => {
+									;(e.currentTarget as HTMLImageElement).src = spriteUrl(member.pokemon_id)
+								}}
 							/>
 						</a>
 						<a
@@ -107,7 +108,9 @@
 
 	<!-- Suggestions from favorites -->
 	{#if favoritesStore.items.length > 0}
-		{@const suggestions = favoritesStore.items.filter((f) => !teamStore.inTeam(f.pokemon_id)).slice(0, 5)}
+		{@const suggestions = favoritesStore.items
+			.filter((f) => !teamStore.inTeam(f.pokemon_id))
+			.slice(0, 5)}
 		{#if suggestions.length > 0}
 			<div>
 				<h2 class="text-lg font-semibold text-gray-700 mb-4">Suggestions depuis vos favoris</h2>
@@ -130,8 +133,13 @@
 		{/if}
 	{:else if teamStore.members.length === 0}
 		<div class="text-center py-8 text-gray-400">
-			<p class="mb-4">Explorez le Pokédex et ajoutez des Pokémon à votre équipe depuis leur page de détail !</p>
-			<a href="/pokemon" class="inline-block px-6 py-3 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-lg transition-colors">
+			<p class="mb-4">
+				Explorez le Pokédex et ajoutez des Pokémon à votre équipe depuis leur page de détail !
+			</p>
+			<a
+				href="/pokemon"
+				class="inline-block px-6 py-3 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-lg transition-colors"
+			>
 				Voir le Pokédex
 			</a>
 		</div>

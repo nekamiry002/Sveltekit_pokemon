@@ -38,7 +38,10 @@
 			<p class="text-gray-500 mt-1">Comparez les statistiques de vos Pokémon</p>
 		</div>
 		<div class="flex gap-3">
-			<a href="/pokemon" class="px-4 py-2 border text-gray-600 rounded-lg text-sm hover:bg-gray-50 transition-colors">
+			<a
+				href="/pokemon"
+				class="px-4 py-2 border text-gray-600 rounded-lg text-sm hover:bg-gray-50 transition-colors"
+			>
 				← Retour
 			</a>
 			{#if data.pokemons.length > 0}
@@ -69,7 +72,10 @@
 	{:else}
 		<!-- Pokemon header row -->
 		<div class="bg-white rounded-xl shadow-md overflow-hidden mb-6">
-			<div class="grid gap-px bg-gray-100" style="grid-template-columns: 160px repeat({data.pokemons.length}, 1fr)">
+			<div
+				class="grid gap-px bg-gray-100"
+				style="grid-template-columns: 160px repeat({data.pokemons.length}, 1fr)"
+			>
 				<div class="bg-gray-50 p-4"></div>
 				{#each data.pokemons as pokemon}
 					<div class="bg-white p-4 text-center">
@@ -77,9 +83,13 @@
 							src={artworkUrl(pokemon.id)}
 							alt={pokemon.name}
 							class="w-28 h-28 mx-auto object-contain"
-							onerror={(e) => { (e.currentTarget as HTMLImageElement).src = spriteUrl(pokemon.id) }}
+							onerror={(e) => {
+								;(e.currentTarget as HTMLImageElement).src = spriteUrl(pokemon.id)
+							}}
 						/>
-						<p class="text-xs text-gray-400 font-bold mt-1">#{String(pokemon.id).padStart(3, '0')}</p>
+						<p class="text-xs text-gray-400 font-bold mt-1">
+							#{String(pokemon.id).padStart(3, '0')}
+						</p>
 						<a
 							href="/pokemon/{pokemon.id}"
 							class="block font-bold text-gray-800 capitalize hover:text-red-600 transition-colors mt-1"
@@ -101,15 +111,16 @@
 			<div class="bg-gray-50 px-4 py-3 border-b">
 				<h2 class="font-semibold text-gray-700">Informations générales</h2>
 			</div>
-			{#each [
-				{ label: 'Taille', fn: (p: Pokemon) => `${(p.height * 0.1).toFixed(1)} m` },
-				{ label: 'Poids', fn: (p: Pokemon) => `${(p.weight * 0.1).toFixed(1)} kg` },
-				{ label: 'Exp. de base', fn: (p: Pokemon) => `${p.base_experience}` },
-			] as row}
-				<div class="grid gap-px bg-gray-100 border-b last:border-0" style="grid-template-columns: 160px repeat({data.pokemons.length}, 1fr)">
+			{#each [{ label: 'Taille', fn: (p: Pokemon) => `${(p.height * 0.1).toFixed(1)} m` }, { label: 'Poids', fn: (p: Pokemon) => `${(p.weight * 0.1).toFixed(1)} kg` }, { label: 'Exp. de base', fn: (p: Pokemon) => `${p.base_experience}` }] as row}
+				<div
+					class="grid gap-px bg-gray-100 border-b last:border-0"
+					style="grid-template-columns: 160px repeat({data.pokemons.length}, 1fr)"
+				>
 					<div class="bg-gray-50 px-4 py-3 text-sm font-medium text-gray-600">{row.label}</div>
 					{#each data.pokemons as pokemon}
-						<div class="bg-white px-4 py-3 text-sm text-center text-gray-700">{row.fn(pokemon)}</div>
+						<div class="bg-white px-4 py-3 text-sm text-center text-gray-700">
+							{row.fn(pokemon)}
+						</div>
 					{/each}
 				</div>
 			{/each}
@@ -136,12 +147,19 @@
 						<div class="bg-white px-4 py-4">
 							<div class="flex items-center gap-2">
 								<span
-									class="text-sm font-bold w-8 text-center {isBest ? 'text-green-600' : 'text-gray-700'}"
-									aria-label="{STAT_LABELS[statName] ?? statName}: {val}{isBest ? ' (meilleur)' : ''}"
+									class="text-sm font-bold w-8 text-center {isBest
+										? 'text-green-600'
+										: 'text-gray-700'}"
+									aria-label="{STAT_LABELS[statName] ?? statName}: {val}{isBest
+										? ' (meilleur)'
+										: ''}"
 								>
 									{val}
 								</span>
-								<div class="flex-1 h-2 bg-gray-100 rounded-full overflow-hidden" role="presentation">
+								<div
+									class="flex-1 h-2 bg-gray-100 rounded-full overflow-hidden"
+									role="presentation"
+								>
 									<div
 										class="h-full rounded-full transition-all duration-500
 											{isBest ? 'bg-green-500' : 'bg-red-400'}"

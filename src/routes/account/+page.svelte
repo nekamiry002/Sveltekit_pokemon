@@ -63,13 +63,19 @@
 				<h2 class="text-xl font-semibold text-gray-800 mb-6">Modifier le profil</h2>
 
 				{#if form?.success}
-					<div class="mb-4 p-3 bg-green-50 border border-green-200 rounded-lg text-green-700 text-sm" role="alert">
+					<div
+						class="mb-4 p-3 bg-green-50 border border-green-200 rounded-lg text-green-700 text-sm"
+						role="alert"
+					>
 						Profil mis à jour !
 					</div>
 				{/if}
 
 				{#if form?.error}
-					<div class="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm" role="alert">
+					<div
+						class="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm"
+						role="alert"
+					>
 						{form.error}
 					</div>
 				{/if}

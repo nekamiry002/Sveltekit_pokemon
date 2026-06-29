@@ -15,8 +15,12 @@
 
 	let { id, name, types = [], loading = false }: Props = $props()
 
-	const spriteUrl = $derived(`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${id}.png`)
-	const artworkUrl = $derived(`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png`)
+	const spriteUrl = $derived(
+		`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${id}.png`
+	)
+	const artworkUrl = $derived(
+		`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png`
+	)
 
 	let toggling = $state(false)
 
@@ -55,7 +59,9 @@
 	aria-label="Voir le détail de {name} (#{String(id).padStart(3, '0')})"
 >
 	<!-- Artwork background hint -->
-	<div class="absolute inset-0 bg-linear-to-br from-gray-50 to-gray-100 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+	<div
+		class="absolute inset-0 bg-linear-to-br from-gray-50 to-gray-100 opacity-0 group-hover:opacity-100 transition-opacity"
+	></div>
 
 	<div class="relative p-4">
 		<!-- Top row: number + action buttons -->
@@ -72,8 +78,19 @@
 					aria-label={inCompare ? 'Retirer de la comparaison' : 'Comparer ce Pokémon'}
 					aria-pressed={inCompare}
 				>
-					<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+					<svg
+						class="w-3.5 h-3.5"
+						fill="none"
+						stroke="currentColor"
+						viewBox="0 0 24 24"
+						aria-hidden="true"
+					>
+						<path
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							stroke-width="2"
+							d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
+						/>
 					</svg>
 				</button>
 
@@ -89,8 +106,19 @@
 						aria-label={isFav ? 'Retirer des favoris' : 'Ajouter aux favoris'}
 						aria-pressed={isFav}
 					>
-						<svg class="w-3.5 h-3.5" fill={isFav ? 'currentColor' : 'none'} stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+						<svg
+							class="w-3.5 h-3.5"
+							fill={isFav ? 'currentColor' : 'none'}
+							stroke="currentColor"
+							viewBox="0 0 24 24"
+							aria-hidden="true"
+						>
+							<path
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								stroke-width="2"
+								d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
+							/>
 						</svg>
 					</button>
 				{/if}
@@ -107,7 +135,9 @@
 					alt={name}
 					class="w-24 h-24 object-contain drop-shadow-md group-hover:scale-110 transition-transform duration-300"
 					loading="lazy"
-					onerror={(e) => { (e.currentTarget as HTMLImageElement).src = spriteUrl }}
+					onerror={(e) => {
+						;(e.currentTarget as HTMLImageElement).src = spriteUrl
+					}}
 				/>
 			{/if}
 		</div>

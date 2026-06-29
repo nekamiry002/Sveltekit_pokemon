@@ -5,11 +5,7 @@ export const load: PageServerLoad = async ({ locals: { supabase, safeGetSession 
 	const { user } = await safeGetSession()
 	if (!user) redirect(303, '/login')
 
-	const { data: profile } = await supabase
-		.from('profiles')
-		.select('*')
-		.eq('id', user.id)
-		.single()
+	const { data: profile } = await supabase.from('profiles').select('*').eq('id', user.id).single()
 
 	return { user, profile }
 }

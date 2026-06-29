@@ -32,24 +32,18 @@ export const ratingsService = {
 		rating: number,
 		comment: string
 	): Promise<{ success: boolean; error: string | null }> {
-		const { error } = await supabase.from('ratings').upsert(
-			{ user_id: userId, pokemon_id: pokemonId, rating, comment },
-			{ onConflict: 'user_id,pokemon_id' }
-		)
+		const { error } = await supabase
+			.from('ratings')
+			.upsert(
+				{ user_id: userId, pokemon_id: pokemonId, rating, comment },
+				{ onConflict: 'user_id,pokemon_id' }
+			)
 		if (error) return { success: false, error: error.message }
 		return { success: true, error: null }
 	},
 
-	async delete(
-		supabase: SupabaseClient,
-		userId: string,
-		pokemonId: number
-	): Promise<void> {
-		await supabase
-			.from('ratings')
-			.delete()
-			.eq('user_id', userId)
-			.eq('pokemon_id', pokemonId)
+	async delete(supabase: SupabaseClient, userId: string, pokemonId: number): Promise<void> {
+		await supabase.from('ratings').delete().eq('user_id', userId).eq('pokemon_id', pokemonId)
 	},
 
 	averageRating(ratings: Rating[]): number {

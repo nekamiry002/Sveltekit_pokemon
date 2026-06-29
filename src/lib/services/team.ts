@@ -39,10 +39,7 @@ export const teamService = {
 			}
 		}
 
-		const occupiedSlots = await supabase
-			.from('team_members')
-			.select('slot')
-			.eq('user_id', userId)
+		const occupiedSlots = await supabase.from('team_members').select('slot').eq('user_id', userId)
 		const taken = new Set((occupiedSlots.data ?? []).map((r: { slot: number }) => r.slot))
 		const slot = [1, 2, 3, 4, 5, 6].find((s) => !taken.has(s)) ?? 1
 
@@ -57,10 +54,6 @@ export const teamService = {
 	},
 
 	async remove(supabase: SupabaseClient, userId: string, pokemonId: number): Promise<void> {
-		await supabase
-			.from('team_members')
-			.delete()
-			.eq('user_id', userId)
-			.eq('pokemon_id', pokemonId)
+		await supabase.from('team_members').delete().eq('user_id', userId).eq('pokemon_id', pokemonId)
 	},
 }
